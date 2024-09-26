@@ -71,35 +71,66 @@ const char* cast_const_char_ptr(const char8_t* p)
 		reinterpret_cast<const char*>(p);
 }
 
+const wchar_t* cast_const_wchar_ptr(char16_t* p)
+{
+	return
+		const_cast<const wchar_t*>
+		(
+			reinterpret_cast<wchar_t*>(p)
+			);
+}
+
+const wchar_t* cast_const_wchar_ptr(const char16_t* p)
+{
+	return
+		reinterpret_cast<const wchar_t*>(p);
+}
+
 //===========================================================================
+// 적용 안 됨
 //#pragma execution_character_set("utf-8")
 
 //===========================================================================
 void test_utf8(void)
 {
+	//-----------------------------------------------------------------------
 	//SetConsoleOutputCP(65001);
 
-	//const char* local = ".utf8";
-	const char* local = "ko_KR.utf8";
-	//const char* local = "ko_KR";
 
-	//std::setlocale(LC_ALL, local); // cpp runtime
-	setlocale(LC_ALL, local); // c runtime
+	//-----------------------------------------------------------------------
+	//const char* cpp_local = ".utf8";
+	//const char* cpp_local = "ko_KR.utf8";
+	//const char* cpp_local = "ko_KR";
 
-
-
-	unsigned char _ga_euckr[3] = { 0xb0, 0xa1, 0 };
-	char8_t       _ga_utf8 [4] = { 0xea, 0xb0, 0x80, 0 };
-	wchar_t       _ga_wchar[2] = { 0xac00, 0 };
+	//std::setlocale(LC_ALL, cpp_local); // cpp runtime
 
 
-	std::cout  << "std::cout << : " << _ga_euckr << std::endl;
-	std::cout  << "std::cout << : " << cast_const_char_ptr(_ga_utf8) << std::endl;
-	std::wcout << "std::wcout<< : " << _ga_wchar << std::endl;
-	std::cout  << std::endl;
+	//-----------------------------------------------------------------------
+	//const char* c_local = ".utf8";
+	const char* c_local = "ko_KR.utf8";
+	//const char* c_local = "ko_KR";
+
+	setlocale(LC_ALL, c_local); // c runtime
+
+
+	//-----------------------------------------------------------------------
+	unsigned char _ga_euckr  [3] = { 0xb0, 0xa1, 0 };
+	char8_t       _ga_utf8   [4] = { 0xea, 0xb0, 0x80, 0 };
+	wchar_t       _ga_unicode[2] = { 0xac00, 0 }; // linux 32 bit, window 16 bit
+	char16_t      _ga_utf16  [2] = { 0xac00, 0 };
+
+
+	std::cout  <<  "std::cout  << _ga_euckr  : " << _ga_euckr << std::endl;
+	std::cout  <<  "std::cout  << _ga_utf8   : " << cast_const_char_ptr(_ga_utf8) << std::endl;
+	std::wcout << L"std::wcout << _ga_utf16  : " << cast_const_wchar_ptr(_ga_utf16) << std::endl; // local 미설정시 출력되지 않음
+	std::wcout << L"std::wcout << _ga_unicode: " << _ga_unicode << std::endl; // local 미설정시 출력되지 않음
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 
 
+	//-----------------------------------------------------------------------
 	char8_t A_ga_B[6] = { 65, 234, 176, 128, 66, 0 };
 
 
@@ -109,9 +140,12 @@ void test_utf8(void)
 	);
 
 	std::cout << "std::cout<< : " << cast_const_char_ptr(A_ga_B) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 
-
+	//-----------------------------------------------------------------------
 	// vld test
 	//char* p = new char[1];
 	char* p = new char{ 0 };
