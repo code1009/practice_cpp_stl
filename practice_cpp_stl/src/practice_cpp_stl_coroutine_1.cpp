@@ -13,6 +13,8 @@
 #include <concepts>
 #include <exception>
 
+#include <Windows.h>
+
 
 
 
@@ -63,7 +65,15 @@ struct S
 
 	coroutine f()
 	{
-		std::cout << "코루틴함수"  << i << std::endl;
+		std::cout << "코루틴함수-a="  << i++ << std::endl;
+		co_await std::suspend_always();
+
+		std::cout << "코루틴함수-b=" << i++ << std::endl;
+		co_await std::suspend_always();
+
+		std::cout << "코루틴함수-c=" << i++ << std::endl;
+		co_await std::suspend_always();
+
 		co_return;
 	}
 };
