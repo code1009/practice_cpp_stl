@@ -26,4 +26,9 @@
       <Filter>root\res</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="res\app.manifest">
+      <Filter>root\res</Filter>
+    </Manifest>
+  </ItemGroup>
 </Project>
