@@ -15,7 +15,10 @@
     <ClCompile Include="src\main.cpp">
       <Filter>root\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\practice_cpp_stl_cotask_0.cpp">
+    <ClCompile Include="src\practice_cpp_stl_coroutine_0.cpp">
+      <Filter>root\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\practice_cpp_stl_coroutine_1.cpp">
       <Filter>root\src</Filter>
     </ClCompile>
   </ItemGroup>

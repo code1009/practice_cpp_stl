@@ -155,7 +155,7 @@ int practice_main(int argc, char* argv[])
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-int practice_cpp_stl_cotask_0(void)
+int practice_cpp_stl_coroutine_0(void)
 {
 	return practice_main(0, nullptr);
 }

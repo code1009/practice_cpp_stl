@@ -239,7 +239,8 @@ int getch()
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-int practice_cpp_stl_cotask_0(void);
+int practice_cpp_stl_coroutine_0(void);
+int practice_cpp_stl_coroutine_1(void);
 
 
 
@@ -251,7 +252,8 @@ void practice_main(void)
 {
 	//test_utf8();
 
-	practice_cpp_stl_cotask_0();
+	//practice_cpp_stl_coroutine_0();
+	practice_cpp_stl_coroutine_1();
 
 	getch();
 }
