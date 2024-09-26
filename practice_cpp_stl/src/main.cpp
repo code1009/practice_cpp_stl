@@ -208,7 +208,10 @@ int getch()
 
 	INPUT_RECORD inputRecord;
 	DWORD events;
-	char ch = 0;
+	char ch;
+
+
+	ch = 0;
 
 	while (true) 
 	{
