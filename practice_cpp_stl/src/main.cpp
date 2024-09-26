@@ -17,6 +17,13 @@
 #include <memory.h>
 #include <tchar.h>
 
+#include <stdio.h>
+#include <locale.h>
+
+//===========================================================================
+#include <clocale>
+#include <iostream>
+
 //===========================================================================
 #if defined(_DEBUG)
 #include "../../vld/vld.h"
@@ -48,31 +55,75 @@
 
 */
 
+//===========================================================================
+//#pragma execution_character_set("utf-8")
+
 
 
 
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
+const char* cast_const_char_ptr(char8_t* p)
+{
+	return
+		const_cast<const char*>
+		(
+			reinterpret_cast<char*>(p)
+			);
+}
+
+const char* cast_const_char_ptr(const char8_t* p)
+{
+	return
+		reinterpret_cast<const char*>(p);
+}
+
+//===========================================================================
 void test_utf8(void)
 {
+	SetConsoleOutputCP(65001);
+	std::setlocale(LC_ALL, ".utf8");
+	setlocale(LC_ALL, ".utf8");
+
+
+	char8_t A_ga_B[6] = { 65, 234, 176, 128, 66, 0 };
+
+
+	printf("printf()    : %s\r\n",
+		//reinterpret_cast<char*>(&A_ga_B[0])
+		cast_const_char_ptr(&A_ga_B[0])
+	);
+
+	std::cout << "std::cout<< : " << cast_const_char_ptr(A_ga_B) << std::endl;
+
+
+
 	// vld test
+	//char* p = new char[1];
 	char* p = new char{ 0 };
 
 	OutputDebugStringA("\r\n");
 	OutputDebugStringA("\r\n");
 	OutputDebugStringA("\r\n");
+
 	OutputDebugStringA((LPCSTR)u8"MESSAGE:");
-	OutputDebugStringA((LPCSTR)u8"가나다라"); // 출력 안됨
+	OutputDebugStringA("\r\n");
+
+	OutputDebugStringA((LPCSTR)u8"가나다라a"); // 출력 안됨(a도 출력안됨)
+	OutputDebugStringA("\r\n");
+
+	OutputDebugStringA((LPCSTR)A_ga_B); // 출력 깨짐
+	OutputDebugStringA("\r\n");
+
 	OutputDebugStringA("\r\n");
 	OutputDebugStringA("\r\n");
 	OutputDebugStringA("\r\n");
 
-	char8_t A_ga_B[6] = { 65, 234, 176, 128, 66, 0 };
 
 	MessageBoxA(nullptr, (LPCSTR)u8"가나다라", (LPCSTR)A_ga_B, MB_OK);
-	OutputDebugStringA((LPCSTR)A_ga_B); // 출력 안됨
-	
+
+
 #if 0
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
@@ -85,7 +136,6 @@ void test_utf8(void)
 </assembly>
 #endif
 }
-
 
 
 
@@ -149,9 +199,7 @@ int practice_cpp_stl_cotask_0(void);
 //===========================================================================
 void practice_main(void)
 {
-	//char* p = new char[1];
-
-//test_utf8();
+	//test_utf8();
 
 	practice_cpp_stl_cotask_0();
 
@@ -177,7 +225,6 @@ wWinMain
 	return 0;
 }
 
-//===========================================================================
 int APIENTRY
 WinMain
 (
@@ -190,3 +237,17 @@ WinMain
 	practice_main();
 	return 0;
 }
+
+int main()
+{
+	practice_main();
+	return 0;
+}
+
+int wmain()
+{
+	practice_main();
+	return 0;
+}
+
+
