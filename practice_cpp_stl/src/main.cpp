@@ -28,6 +28,18 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
+#if defined(UNICODE)
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
 /*
 # .manifest 리소스 추가시 빌드 설정
 
@@ -80,17 +92,101 @@ void test_utf8(void)
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-int APIENTRY wWinMain(
+int getch() 
+{
+	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	if (hStdin == INVALID_HANDLE_VALUE) 
+	{
+		return -1;
+	}
+
+	DWORD mode;
+	if (!GetConsoleMode(hStdin, &mode)) 
+	{
+		return -1;
+	}
+
+	// 콘솔 모드를 변경하여 입력을 즉시 처리하도록 설정
+	SetConsoleMode(hStdin, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
+
+	INPUT_RECORD inputRecord;
+	DWORD events;
+	char ch = 0;
+
+	while (true) 
+	{
+		if (!ReadConsoleInput(hStdin, &inputRecord, 1, &events)) 
+		{
+			return -1;
+		}
+
+		if (inputRecord.EventType == KEY_EVENT && inputRecord.Event.KeyEvent.bKeyDown) 
+		{
+			ch = inputRecord.Event.KeyEvent.uChar.AsciiChar;
+			break;
+		}
+	}
+
+	// 원래 콘솔 모드로 복원
+	SetConsoleMode(hStdin, mode);
+
+	return ch;
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
+int practice_cpp_stl_cotask_0(void);
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
+void practice_main(void)
+{
+	//char* p = new char[1];
+
+//test_utf8();
+
+	practice_cpp_stl_cotask_0();
+
+	getch();
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
+int APIENTRY
+wWinMain
+(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPWSTR    lpCmdLine,
-	int       nCmdShow)
+	int       nCmdShow
+)
 {
+	practice_main();
+	return 0;
+}
 
-	char* p = new char[1];
-
-	test_utf8();
-
-
+//===========================================================================
+int APIENTRY
+WinMain
+(
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR    lpCmdLine,
+	int       nCmdShow
+)
+{
+	practice_main();
 	return 0;
 }
