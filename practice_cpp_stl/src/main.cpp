@@ -56,14 +56,6 @@
 */
 
 //===========================================================================
-//#pragma execution_character_set("utf-8")
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-//===========================================================================
 const char* cast_const_char_ptr(char8_t* p)
 {
 	return
@@ -80,11 +72,32 @@ const char* cast_const_char_ptr(const char8_t* p)
 }
 
 //===========================================================================
+//#pragma execution_character_set("utf-8")
+
+//===========================================================================
 void test_utf8(void)
 {
-	SetConsoleOutputCP(65001);
-	std::setlocale(LC_ALL, ".utf8");
-	setlocale(LC_ALL, ".utf8");
+	//SetConsoleOutputCP(65001);
+
+	//const char* local = ".utf8";
+	const char* local = "ko_KR.utf8";
+	//const char* local = "ko_KR";
+
+	//std::setlocale(LC_ALL, local); // cpp runtime
+	setlocale(LC_ALL, local); // c runtime
+
+
+
+	unsigned char _ga_euckr[3] = { 0xb0, 0xa1, 0 };
+	char8_t       _ga_utf8 [4] = { 0xea, 0xb0, 0x80, 0 };
+	wchar_t       _ga_wchar[2] = { 0xac00, 0 };
+
+
+	std::cout  << "std::cout << : " << _ga_euckr << std::endl;
+	std::cout  << "std::cout << : " << cast_const_char_ptr(_ga_utf8) << std::endl;
+	std::wcout << "std::wcout<< : " << _ga_wchar << std::endl;
+	std::cout  << std::endl;
+
 
 
 	char8_t A_ga_B[6] = { 65, 234, 176, 128, 66, 0 };
